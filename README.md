@@ -1,40 +1,94 @@
-# Job Management Platform (Advanced Backend)
+# Job Management System
 
-This project builds on the existing Job Management codebase and adds backend infrastructure and authentication. It is not just a collection of CRUD endpoints: the existing application workflow and status transitions remain the domain core.
+A secure recruitment backend built with Java and Spring Boot to manage job postings, candidate applications, and recruitment workflows.
 
-## Tech stack
-- Java 27 (configure a real JDK 27 in IntelliJ and Maven)
-- Spring Boot, Spring Web MVC, Spring Data JPA, Hibernate
-- MySQL
-- Spring Security + BCrypt password hashing
-- JWT bearer authentication (JJWT)
-- OAuth2 Client login support (provider credentials must be configured to use an actual provider)
-- Swagger UI / OpenAPI
-- Spring Boot Actuator and Micrometer metrics
-- Maven, JUnit 5, Mockito
+## Tech Stack
 
-## Run locally
-1. Install JDK 27 and MySQL. Create database `job_management` (or let the configured URL create it).
-2. Set environment variables `DB_USERNAME`, `DB_PASSWORD`, and preferably `JWT_SECRET` (Base64-encoded random key of at least 32 bytes). Optional: `DB_URL`.
-3. Open this folder in IntelliJ, reload Maven, then run `JobManagementApplication`.
-4. Check `http://localhost:8080/swagger-ui.html` and `http://localhost:8080/actuator/health`.
+Java 21 · Spring Boot · Spring Security · JWT · MySQL · Spring Data JPA · Maven · Swagger/OpenAPI · Spring Boot Actuator · JUnit 5 · Mockito
 
-## Authentication endpoints
-- `POST /api/auth/register` — creates an account and hashes its password with BCrypt.
-- `POST /api/auth/login` — returns a JWT. Send subsequent requests with `Authorization: Bearer <accessToken>`.
+## Features
 
-Example login JSON:
-```json
-{ "email": "candidate@example.com", "password": "your-password" }
+- JWT-based authentication and role-based access control
+- Candidate and recruiter roles
+- Job listing and management
+- Job applications and status tracking
+- Duplicate application prevention
+- Input validation and exception handling
+- Swagger UI API documentation
+- Actuator health checks and application metrics
+- Unit testing with JUnit and Mockito
+
+## Architecture
+
+The application follows a layered backend architecture:
+
+- **Controller:** Handles HTTP requests and responses
+- **Service:** Implements business logic
+- **Repository:** Manages database operations
+- **Entity and DTO:** Represent database models and API data
+- **Security:** Handles authentication and authorization
+
+## Screenshots
+
+_Add screenshots of the actual Swagger UI and API responses here._
+
+## Getting Started
+
+### Prerequisites
+- Java 21
+- MySQL 8
+- Maven
+
+### Configuration
+
+Create the `job_management` database and configure these environment variables:
+
+```text
+DB_USERNAME=your_db_username
+DB_PASSWORD=your_db_password
+JWT_SECRET=your_base64_encoded_random_secret
 ```
 
-Registration JSON uses `name`, `email`, `password`, and `role` (`CANDIDATE` or `RECRUITER`).
+Optionally configure `DB_URL` if your MySQL connection URL differs from the default.
 
-## OAuth2 setup
-OAuth2 login support is wired through Spring Security, but a provider (Google/GitHub, etc.) is intentionally not preconfigured with fake credentials. Add a real client registration and secret in environment-backed configuration before using OAuth2 login.
+### Run the Application
 
-## Actuator
-Exposed endpoints: health, info, and metrics. The health/info endpoints are public for local checks; other actuator endpoints require the RECRUITER role. Do not expose all actuator endpoints publicly in production.
+1. Clone the repository.
+2. Open the project in IntelliJ IDEA.
+3. Reload the Maven project.
+4. Configure the required environment variables.
+5. Run `JobManagementApplication`.
 
-## Tests and Java 27 compatibility
-Run `mvn clean test` using JDK 27. The Maven compiler release is set to 27. Stream pipelines in the existing code use `Collectors.toList()` rather than `Stream.toList()` to avoid the specific API mismatch previously encountered when the IDE/compiler targeted an older Java release. This archive has not been verified by a full build on JDK 27 in this environment.
+### API Documentation
+
+Once the application is running, open:
+
+- Swagger UI: http://localhost:8080/swagger-ui.html
+- Health: http://localhost:8080/actuator/health
+- Info: http://localhost:8080/actuator/info
+- Metrics: http://localhost:8080/actuator/metrics
+
+## Key API Endpoints
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | `/api/auth/register` | Register a user |
+| POST | `/api/auth/login` | Authenticate and receive a JWT |
+| GET | `/api/jobs` | Retrieve job listings |
+| POST | `/api/applications` | Apply for a job |
+| GET | `/api/applications/job/{jobId}` | View applications for a job |
+| PUT | `/api/applications/{id}/status` | Update application status |
+
+Protected endpoints require a valid JWT Bearer token and the appropriate role.
+
+## Testing
+
+Run the test suite using:
+
+```bash
+mvn clean test
+```
+
+## Security
+
+Passwords are hashed using BCrypt, and JWT authentication protects secured endpoints. Keep database credentials and JWT secrets out of version control.
