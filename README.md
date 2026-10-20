@@ -1,94 +1,125 @@
 # Job Management System
 
-A secure recruitment backend built with Java and Spring Boot to manage job postings, candidate applications, and recruitment workflows.
+A backend recruitment platform developed using Java and Spring Boot to streamline the hiring process. The system enables candidates to explore job listings and apply for positions, while recruiters can manage applications and update their statuses. It uses JWT authentication, role-based access control, and MySQL to support secure and organized recruitment workflows.
 
-## Tech Stack
-
-Java 21 · Spring Boot · Spring Security · JWT · MySQL · Spring Data JPA · Maven · Swagger/OpenAPI · Spring Boot Actuator · JUnit 5 · Mockito
+![Job Management System Overview](screenshots/project-overview.png)
 
 ## Features
 
-- JWT-based authentication and role-based access control
-- Candidate and recruiter roles
-- Job listing and management
-- Job applications and status tracking
+- Secure user registration and login using JWT authentication
+- Role-based access for Candidates and Recruiters
+- Job listings and application management
+- Application status tracking and updates
 - Duplicate application prevention
+- Password hashing using BCrypt
+- RESTful APIs with Swagger/OpenAPI documentation
 - Input validation and exception handling
-- Swagger UI API documentation
-- Actuator health checks and application metrics
-- Unit testing with JUnit and Mockito
+
+## Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| Java 21 | Backend programming |
+| Spring Boot | Application framework |
+| Spring Web | REST API development |
+| Spring Security | Authentication and authorization |
+| JWT (JJWT) | Token-based authentication |
+| Spring Data JPA | Database interaction |
+| Hibernate | Object-relational mapping |
+| MySQL | Relational database |
+| Swagger / OpenAPI | API documentation and testing |
+| Maven | Dependency management and build |
+| JUnit 5 & Mockito | Testing |
 
 ## Architecture
 
 The application follows a layered backend architecture:
 
-- **Controller:** Handles HTTP requests and responses
-- **Service:** Implements business logic
-- **Repository:** Manages database operations
-- **Entity and DTO:** Represent database models and API data
-- **Security:** Handles authentication and authorization
+- **Controller Layer:** Handles HTTP requests and responses.
+- **Service Layer:** Implements business logic and recruitment workflows.
+- **Repository Layer:** Manages database operations.
+- **Entity and DTO Layer:** Represents database entities and API data.
+- **Security Layer:** Handles authentication and role-based authorization.
 
-## Screenshots
+## API Endpoints
 
-_Add screenshots of the actual Swagger UI and API responses here._
-
-## Getting Started
-
-### Prerequisites
-- Java 21
-- MySQL 8
-- Maven
-
-### Configuration
-
-Create the `job_management` database and configure these environment variables:
-
-```text
-DB_USERNAME=your_db_username
-DB_PASSWORD=your_db_password
-JWT_SECRET=your_base64_encoded_random_secret
-```
-
-Optionally configure `DB_URL` if your MySQL connection URL differs from the default.
-
-### Run the Application
-
-1. Clone the repository.
-2. Open the project in IntelliJ IDEA.
-3. Reload the Maven project.
-4. Configure the required environment variables.
-5. Run `JobManagementApplication`.
-
-### API Documentation
-
-Once the application is running, open:
-
-- Swagger UI: http://localhost:8080/swagger-ui.html
-- Health: http://localhost:8080/actuator/health
-- Info: http://localhost:8080/actuator/info
-- Metrics: http://localhost:8080/actuator/metrics
-
-## Key API Endpoints
-
-| Method | Endpoint | Purpose |
+| Method | Endpoint | Description |
 |---|---|---|
-| POST | `/api/auth/register` | Register a user |
+| POST | `/api/auth/register` | Register a new user |
 | POST | `/api/auth/login` | Authenticate and receive a JWT |
-| GET | `/api/jobs` | Retrieve job listings |
+| GET | `/api/jobs` | Retrieve available job listings |
 | POST | `/api/applications` | Apply for a job |
 | GET | `/api/applications/job/{jobId}` | View applications for a job |
+| GET | `/api/applications/job/{jobId}/status?status=APPLIED` | Filter applications by status |
 | PUT | `/api/applications/{id}/status` | Update application status |
 
 Protected endpoints require a valid JWT Bearer token and the appropriate role.
 
+## Getting Started
+
+### Prerequisites
+
+- Java Development Kit (JDK) 21
+- MySQL 8
+- IntelliJ IDEA
+- Maven
+
+### Database Setup
+
+Create a MySQL database named:
+
+```sql
+CREATE DATABASE job_management;
+```
+
+### Environment Variables
+
+Configure the following environment variables in your IntelliJ run configuration:
+
+```text
+DB_USERNAME=your_mysql_username
+DB_PASSWORD=your_mysql_password
+JWT_SECRET=your_base64_encoded_random_secret
+```
+
+You can optionally configure `DB_URL` if your database connection URL differs from the default.
+
+**Security:** Use a strong, randomly generated JWT secret. Never commit database passwords or secrets to GitHub.
+
+### Run the Application
+
+1. Clone or open the project in IntelliJ IDEA.
+2. Reload the Maven project.
+3. Configure the required environment variables.
+4. Run `JobManagementApplication`.
+5. Open the Swagger UI URL below.
+
+## API Documentation
+
+Once the application is running:
+
+- **Swagger UI:** `http://localhost:8080/swagger-ui.html`
+
+Use Swagger UI to explore endpoints and test API requests.
+
 ## Testing
 
-Run the test suite using:
+Run the test suite using Maven:
 
 ```bash
 mvn clean test
 ```
 
-## Security
+## Spring Boot Actuator
 
-Passwords are hashed using BCrypt, and JWT authentication protects secured endpoints. Keep database credentials and JWT secrets out of version control.
+The project configuration includes Actuator endpoint exposure for health, info, and metrics. Verify endpoint availability and permissions in your local environment before relying on them.
+
+## Future Improvements
+
+- Add integration tests for recruitment workflows.
+- Configure and test an OAuth2 identity provider.
+- Add deployment and production monitoring.
+
+---
+
+**Developed with Java, Spring Boot, Spring Security, JWT, and MySQL.**
