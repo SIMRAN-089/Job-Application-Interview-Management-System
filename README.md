@@ -1,4 +1,4 @@
-# Job Management System
+# # Job Application & Interview Management System
 
 A backend recruitment platform developed using Java and Spring Boot to streamline the hiring process. The system enables candidates to explore job listings and apply for positions, while recruiters can manage applications and update their statuses. It uses JWT authentication, role-based access control, and MySQL to support secure and organized recruitment workflows.
 
